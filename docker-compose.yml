@@ -1,0 +1,30 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432"
+  backend:
+    build:
+      context: jiujitsio-backend
+      args:
+        UID: ${UID:-1001}
+    # Added this from https://stackoverflow.com/questions/53475116/error-running-db-migrate-with-docker-for-rails
+    command: bundle exec rails s -p 8080 -b '0.0.0.0'
+    volumes:
+      - ./jiujitsio-backend:/usr/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    user: rails
+  frontend:
+    build:
+      context: jiujitsio-frontend
+      args:
+        UID: ${UID:-1001}
+    volumes:
+      - ./jiujitsio-frontend:/usr/src/app
+    ports:
+      - "3000:3000"
+    user: frontend
