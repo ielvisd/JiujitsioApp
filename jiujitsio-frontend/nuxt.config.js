@@ -1,4 +1,8 @@
+const path = require("path");
+
 module.exports = {
+  css: ["~assets/css/tailwind.css"],
+
   /*
    ** Headers of the page
    */
@@ -32,6 +36,11 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    postcss: {
+      plugins: {
+        tailwindcss: path.resolve(__dirname, "./tailwind.config.js")
+      }
+    },
     /*
      ** Run ESLint on save
      */
